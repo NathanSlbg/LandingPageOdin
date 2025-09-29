@@ -92,7 +92,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
         gps_sensor: "gps_sensor.txt"
         surface_temp: "surface_temp.txt"
     ```
-* **Résultats :** Le script peuple la structure de données du projet. À la fin de l'exécution, le dossier `Data/raw_sessions/flir_images/[session_id]` contient les images et le dossier `Data/raw_sessions/aux_data/[session_id]` contient les fichiers de logs renommés.
+* **Résultats :** Le script peuple la structure de données du projet. À la fin de l'exécution, le dossier `data/raw_sessions/flir_images/[session_id]` contient les images et le dossier `data/raw_sessions/aux_data/[session_id]` contient les fichiers de logs renommés.
 
 ### 2. `preprocessing.py`
 
@@ -107,7 +107,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
       lower_percentile: 1.0
       upper_percentile: 99.0
     ```
-* **Résultats :** Un nouveau dossier est créé à l'emplacement `Data/preprocessed_images/[session_id]`. Ce dossier contient les images thermiques normalisées au format `.png`.
+* **Résultats :** Un nouveau dossier est créé à l'emplacement `data/preprocessed_images/[session_id]`. Ce dossier contient les images thermiques normalisées au format `.png`.
 
 ### 3. `segmentation.py`
 
@@ -116,11 +116,10 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
     ```bash
     python scripts/segmentation.py
     ```
-* **Configuration (`config.yaml`) :**
+* **Configuration (`config.yaml`) :** Seul le choix du modèle est important ici. Les autres paramètres doivent être conservés.
     ```yaml
-    session_id: "session_570"
     segmentation:
-      template_toml: "external/FTNet/ftnet/cfg/infer_images.toml"
+      template_toml: "external/FTNet/ftnet/cfg/infer_images.toml" 
       model_weights: "models/finetuned_models/Test_4/ckpt/epoch=46-val_mIOU=0.4421.ckpt"
       output_dir_name: "ftnet"
     ```
@@ -133,9 +132,8 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
     ```bash
     python scripts/correction.py
     ```
-* **Configuration (`config.yaml`) :**
+* **Configuration (`config.yaml`) :** Pour des améliorations, on peut envisager de modifier les thresholds et paramètres applicatifs de SAM.
     ```yaml
-    session_id: "session_570"
     correction:
       ftnet_input_dir: "ftnet"
       ftnet_results_subpath: "Evaluation/infer/Predictions"
@@ -146,8 +144,10 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
       coverage_thresholds:
         route: 0.7
         building: 0.6
+        ...
       generator_params:
         points_per_side: 32
+        
     ```
 * **Résultats :** Le script génère quatre sorties principales : les masques corrigés (`final_corrected`), les visualisations SAM (`sam`), et les cartes d'IDs et aperçus pour l'annotation (`annotation_data`).
 
