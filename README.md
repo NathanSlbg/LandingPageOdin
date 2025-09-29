@@ -13,21 +13,15 @@ Ce projet a pour objectif de mettre en place une chaîne de traitement complète
     ```
 
 2.  **Installer les dépendances Python :**
-    Il est recommandé d'utiliser un environnement virtuel.
+    Il est recommandé d'utiliser un environnement virtuel avec Python 3.10.
     ```bash
     python -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
     ```
 
-3.  **Installer les outils externes :**
-    Les modèles et outils externes doivent être placés dans le dossier `External/`.
-    * **ExifTool :** Téléchargez et décompressez ExifTool. Le chemin vers l'exécutable doit correspondre à `exiftool_path` dans `Config/config.yaml`.
-    * **FTNet :** Clonez ou copiez le dépôt du modèle FTNet dans `External/FTNet/`.
-    * **Segment Anything (SAM) :** Clonez ou copiez le dépôt et téléchargez le poids du modèle (`.pth`) requis. Le chemin doit correspondre à `sam_checkpoint` dans `Config/config.yaml`.
-
-4.  **Configuration :**
-    Le fichier principal de configuration est `Config/config.yaml`. Avant de lancer les scripts, assurez-vous de renseigner les chemins et les paramètres, notamment le `session_id` que vous souhaitez traiter.
+3.  **Configuration :**
+    Le fichier principal de configuration est `config/config.yaml`. Avant de lancer les scripts, il faut renseigner les chemins et les paramètres, notamment le `session_id` à traiter.
 
 ---
 
@@ -35,8 +29,8 @@ Ce projet a pour objectif de mettre en place une chaîne de traitement complète
 
 La structure du projet est organisée comme suit pour séparer clairement les données, les scripts et les résultats.
 
-* `Config/` : Contient le fichier de configuration central `config.yaml`.
-* `Data/` : Toutes les données liées au projet. Chaque sous-dossier est généralement organisé par identifiant de session (`session_id`).
+* `config/` : Contient le fichier de configuration central `config.yaml`.
+* `data/` : Toutes les données liées au projet. Chaque sous-dossier est généralement organisé par identifiant de session (`session_id`).
     * `raw_sessions/` : Données brutes de chaque session de mesure.
         * `flir_images/` : Images thermiques (`.JPG`).
         * `aux_data/` : Fichiers texte (`.txt`) contenant les métadonnées (GPS, météo, etc.).
@@ -50,28 +44,28 @@ La structure du projet est organisée comme suit pour séparer clairement les do
         * `sam_previews/`, `sam_npy_maps/`, `sam_class_maps/`.
     * `manual_annotations/` : Images annotées manuellement pour le fine-tuning.
     * `annotated_dataset/` : Le jeu de données finalisé pour le fine-tuning, séparé en `image`, `mask` et `edges`.
-* `External/` : Contient les outils et modèles externes comme ExifTool, FTNet et Segment Anything.
-* `Models/` : Contient les modèles de deep learning.
+* `external/` : Contient les outils et modèles externes comme ExifTool, FTNet et Segment Anything.
+* `models/` : Contient les modèles de deep learning.
     * `finetuned_models/` : Modèles ré-entraînés sur nos données spécifiques et logs d'entraînement.
-* `Results/` : Contient les sorties finales du traitement.
+* `results/` : Contient les sorties finales du traitement.
     * `thermal_results/` : Cartes de températures finales en format image (`.png`).
     * `thermal_results_raw_npy/` : Données brutes des cartes de températures (`.npy`).
     * `final_report/` : Rapports CSV contenant des statistiques par image.
     * `master_table.csv` : Un fichier CSV global qui agrège les informations et métriques de toutes les images de toutes les sessions traitées.
-* `Scripts/` : Contient tous les scripts Python pour exécuter la chaîne de traitement.
+* `scripts/` : Contient tous les scripts Python pour exécuter la chaîne de traitement.
 
 ---
 
 ## Description des Scripts
 
-Chaque script est conçu pour être lancé depuis la racine du projet. La configuration de chaque script est gérée via le fichier `Config/config.yaml`.
+Chaque script est conçu pour être lancé depuis la racine du projet. La configuration de chaque script est gérée via le fichier `config/config.yaml`.
 
 ### 1. `data_organization.py`
 
 * **Objectif :** Ce script est le point d'entrée pour une nouvelle session de données. Il localise les fichiers d'images thermiques (`.JPG`) et les fichiers de logs auxiliaires (GPS, météo, etc.) dans un dossier source externe, puis les copie et les renomme dans la structure de dossiers standardisée du projet (`Data/raw_sessions/`).
 * **Lancement :** Le script requiert deux arguments : l'identifiant de la session et le chemin vers le dossier contenant les données brutes.
     ```bash
-    python Scripts/data_organization.py --session-id [ID_DE_LA_SESSION] --source-dir [CHEMIN_VERS_LE_DOSSIER_SOURCE]
+    python scripts/data_organization.py --session-id [session_XXX] --source-dir [CHEMIN_VERS_LE_DOSSIER_SOURCE]
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
@@ -98,7 +92,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 * **Objectif :** Ce script prépare les images thermiques brutes pour la segmentation. Il convertit les images radiométriques en images en niveaux de gris 8 bits. Le processus se déroule en deux étapes : le calcul de seuils de normalisation globaux sur toute la session, puis la normalisation de chaque image individuellement pour garantir une cohérence de contraste.
 * **Lancement :** Le script utilise le `session_id` spécifié dans le fichier de configuration.
     ```bash
-    python Scripts/preprocessing.py
+    python scripts/preprocessing.py
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
@@ -114,7 +108,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 * **Objectif :** Ce script lance le processus de segmentation sémantique en utilisant le modèle externe **FTNet**. Il agit comme un wrapper qui génère une configuration temporaire pour FTNet, puis exécute le script d'inférence pour assigner une étiquette de classe (ex: `route`, `bâtiment`) à chaque pixel.
 * **Lancement :** Le script est piloté par le fichier `config.yaml`.
     ```bash
-    python Scripts/segmentation.py
+    python scripts/segmentation.py
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
@@ -131,7 +125,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 * **Objectif :** Ce script a un double objectif : la **correction automatique** des masques de FTNet en utilisant les contours précis du modèle **Segment Anything (SAM)**, et la **préparation à l'annotation** en générant des cartes de segments avec des identifiants uniques.
 * **Lancement :** Le script est piloté par le `session_id` dans le fichier de configuration.
     ```bash
-    python Scripts/correction.py
+    python scripts/correction.py
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
@@ -156,7 +150,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 * **Objectif :** Ce script effectue le calcul de la **Température de Surface (LST)** pour chaque pixel. Il applique un modèle physique qui corrige les mesures en fonction des conditions environnementales (température de l'air, humidité, rayonnement réfléchi) et de l'**émissivité** de chaque type de surface (route, bâtiment, etc.).
 * **Lancement :** Le script utilise un traitement parallèle pour accélérer les calculs.
     ```bash
-    python Scripts/thermal_calculate.py
+    python scripts/thermal_calculate.py
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
@@ -179,7 +173,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 * **Objectif :** Ce script détecte et segmente les zones d'ombre **uniquement sur la surface de la route**. Il analyse la distribution de température des pixels de la route et utilise l'**algorithme de seuillage automatique d'Otsu** pour trouver la température optimale séparant les zones ensoleillées des zones ombragées.
 * **Lancement :** Le script traite les images en parallèle.
     ```bash
-    python Scripts/road_shadow.py
+    python scripts/road_shadow.py
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
@@ -197,22 +191,22 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 * **Objectif :** Ce script finalise la session en produisant des **rapports statistiques** et des **cartes de température visuelles**. Il calcule des métriques (température moyenne, etc.) par classe et pour les zones soleil/ombre de la route. Il normalise également toutes les cartes de température de la session sur une échelle globale pour assurer la cohérence visuelle.
 * **Lancement :** Le script s'exécute pour la session définie dans `config.yaml`.
     ```bash
-    python Scripts/thermal_finalize.py
+    python scripts/thermal_finalize.py
     ```
 * **Configuration (`config.yaml`) :** Ce script n'a pas sa propre section mais réutilise les configurations des autres scripts.
-* **Résultats :** Le script produit un rapport `rapport_thermique_final.csv` dans `Results/final_report/[session_id]/` et des images `.png` normalisées dans `Results/thermal_results/[session_id]/`.
+* **Résultats :** Le script produit un rapport `rapport_thermique_final.csv` dans `Results/final_report/[session_id]/` et des images `.png` normalisées dans `results/thermal_results/[session_id]/`.
 
-### 8. `master_table.py`
+### 8. `table.py`
 
 * **Objectif :** Ce script est l'outil de gestion de la base de données finale `master_table.csv`. Il fonctionne en **deux modes distincts** pour agréger toutes les informations de toutes les sessions.
 * **Lancement :**
     1.  **Mode `meteo` (à lancer en premier pour une session) :** Synchronise et intègre les données brutes des capteurs (GPS, météo) de la session dans la table maître.
         ```bash
-        python Scripts/master_table.py --mode meteo
+        python scripts/table.py --mode meteo
         ```
     2.  **Mode `temperatures` (à lancer à la fin) :** Met à jour la table maître avec les résultats des analyses (statistiques thermiques, métriques de performance IoU).
         ```bash
-        python Scripts/master_table.py --mode temperatures
+        python scripts/table.py --mode temperatures
         ```
 * **Configuration (`config.yaml`) :**
     ```yaml
@@ -233,7 +227,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 * **Objectif :** Ce script lance une **application web interactive** (avec Streamlit) pour l'annotation manuelle des images. Il permet à un utilisateur de créer des masques de **vérité terrain** en cliquant sur des segments pré-calculés par SAM et en leur assignant une classe, ce qui est beaucoup plus rapide que de dessiner des polygones.
 * **Lancement :** Le lancement se fait avec la commande `streamlit run`.
     ```bash
-    streamlit run Scripts/annotation.py
+    streamlit run scripts/annotation.py
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
@@ -250,7 +244,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 * **Objectif :** Ce script prépare un **jeu de données pour le fine-tuning**. Il prend les annotations manuelles, les sépare en ensembles d'entraînement et de validation, convertit les masques colorés en **masques d'ID de classe** (1 canal), et génère les **cartes de contours (edges)** requises par le modèle FTNet.
 * **Lancement :**
     ```bash
-    python Scripts/prepare_fine_tuning.py
+    python scripts/prepare_fine_tuning.py
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
@@ -270,7 +264,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 * **Objectif :** Ce script lance le **processus d'entraînement (fine-tuning)** du modèle FTNet. Il utilise le jeu de données préparé à l'étape précédente pour spécialiser un modèle de base sur les données thermiques annotées, dans le but d'améliorer ses performances.
 * **Lancement :**
     ```bash
-    python Scripts/fine_tuning.py
+    python scripts/fine_tuning.py
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
