@@ -60,6 +60,13 @@ La structure du projet est organisée comme suit pour séparer clairement les do
 
 Chaque script est conçu pour être lancé depuis la racine du projet. La configuration de chaque script est gérée via le fichier `config/config.yaml`.
 
+### 0. `config.yaml`
+
+* **Important:** Variable commune à modifer pour chaque script suivant la session utilisée.
+    ```yaml
+    session_id : session_XXX
+  ```
+
 ### 1. `data_organization.py`
 
 * **Objectif :** Ce script est le point d'entrée pour une nouvelle session de données. Il localise les fichiers d'images thermiques (`.JPG`) et les fichiers de logs auxiliaires (GPS, météo, etc.) dans un dossier source externe, puis les copie et les renomme dans la structure de dossiers standardisée du projet (`Data/raw_sessions/`).
@@ -67,7 +74,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
     ```bash
     python scripts/data_organization.py --session-id [session_XXX] --source-dir [CHEMIN_VERS_LE_DOSSIER_SOURCE]
     ```
-* **Configuration (`config.yaml`) :**
+* **Configuration (`config.yaml`) :** A ne modifier qu'en cas de changements de formats sur les données récoltées.
     ```yaml
     data_organization:
       file_patterns:
@@ -94,9 +101,8 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
     ```bash
     python scripts/preprocessing.py
     ```
-* **Configuration (`config.yaml`) :**
+* **Configuration (`config.yaml`) :** 
     ```yaml
-    session_id: "session_570"
     preprocessing:
       lower_percentile: 1.0
       upper_percentile: 99.0
