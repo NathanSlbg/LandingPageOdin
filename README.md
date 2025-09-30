@@ -409,11 +409,11 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 
 ## Gestion des classes 
 
-**Segmentation** --> ['fine_tuning']['model_classes']
-**Correction** --> ['correction']['coverage_thresholds'] et ['correction']['bgr_mapping']
-**Thermal Calculate** --> ['thermal_calculation']['bgr_mapping'] et ['thermal_calculation']['emissivity_mapping']
-**Table** --> ['master-table']['bgr_mapping']
-**Annotation** --> ['annotation']['output_bgr_colors']
-**Fine Tuning** --> ['fine_tuning']['model_classes'] et ['fine_tuning']['class_weights']
+* **Segmentation** --> ['fine_tuning']['model_classes']
+* **Correction** --> ['correction']['coverage_thresholds'] et ['correction']['bgr_mapping']
+* **Thermal Calculate** --> ['thermal_calculation']['bgr_mapping'] et ['thermal_calculation']['emissivity_mapping']
+* **Table** --> ['master-table']['bgr_mapping']
+* **Annotation** --> ['annotation']['output_bgr_colors']
+* **Fine Tuning** --> ['fine_tuning']['model_classes'] et ['fine_tuning']['class_weights']
 
   
