@@ -18,15 +18,49 @@ Ce projet a pour objectif de mettre en place une chaîne de traitement complète
     ```bash
     python -m venv venv
     source venv/bin/activate
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+    pip install torch torchvision torchaudio --index-url [https://download.pytorch.org/whl/cu121](https://download.pytorch.org/whl/cu121)
     
     pip install -r config/requirements.txt
     ```
 
-4.  **Configuration :**
+3.  **Configuration :**
     Le fichier principal de configuration est `config/config.yaml`. Avant de lancer les scripts, il faut renseigner les chemins et les paramètres, notamment le `session_id` à traiter.
 
 ---
+
+## Exécution Complète de la Chaîne de Traitement
+
+Cette section résume les commandes à exécuter dans l'ordre pour traiter une session complète, de l'organisation des données brutes à la génération des résultats finaux.
+
+**Prérequis :** Assurez-vous que le fichier `config/config.yaml` est correctement configuré, en particulier le `session_id`.
+
+```bash
+# Étape 1 : Organiser les données brutes de la session depuis un dossier source
+python scripts/data_organization.py --session-id [session_XXX] --source-dir [CHEMIN_VERS_LE_DOSSIER_SOURCE]
+
+# Étape 2 : Créer et initialiser la table maître avec les données GPS et météo
+python scripts/table.py --mode meteo
+
+# Étape 3 : Prétraiter les images thermiques (normalisation)
+python scripts/preprocessing.py
+
+# Étape 4 : Lancer la segmentation sémantique avec FTNet
+python scripts/segmentation.py
+
+# Étape 5 : Corriger les masques de segmentation avec SAM
+python scripts/correction.py
+
+# Étape 6 : Calculer les cartes de température de surface (LST)
+python scripts/thermal_calculate.py
+
+# Étape 7 : Détecter les ombres sur la route
+python scripts/road_shadow.py
+
+# Étape 8 : Finaliser les cartes de température et générer le rapport de session
+python scripts/thermal_finalize.py
+
+# Étape 9 : Mettre à jour la table maître avec les statistiques de température finales
+python scripts/table.py --mode temperatures
 
 ## Organisation des Données et Fichiers
 
