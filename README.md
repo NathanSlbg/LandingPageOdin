@@ -359,7 +359,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 
 * **Emplacement :** models/soda/val_mIOU=0.6403.ckpt
 
-  ## Fine-tuning V1 Jour
+**Fine-tuning V1 Jour**
 
 * Modèle entraîné sur des données de mars et avril.
 * **Classes :**
@@ -379,5 +379,31 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 | 10  | window     | <span style="background-color:rgb(128, 64, 128)">&nbsp;&nbsp;&nbsp;</span> (128, 64, 128) |
 | 11  | marking    | <span style="background-color:rgb(255, 255, 255)">&nbsp;&nbsp;&nbsp;</span> (255, 255, 255) |
 
-* **Emplacement :** models/finetuned_models/V1_jour/1-epoch=37-val_mIOU=0.4305.ckpt
+* **Emplacement :** models/finetuned_models/V1_day/1-epoch=37-val_mIOU=0.4305.ckpt
+
+## Fine-tuning V2 Jour et Nuit
+
+* Modèle entraîné sur des données de jour et de nuit (juillet et août).
+* **Classes :**
+
+| ID  | Classe      | Couleur (RVB)                                                    |
+| :-- | :---------- | :--------------------------------------------------------------- |
+| 0   | background  | <span style="background-color:rgb(0, 0, 0)">&nbsp;&nbsp;&nbsp;</span> (0, 0, 0) |
+| 1   | route       | <span style="background-color:rgb(0, 0, 255)">&nbsp;&nbsp;&nbsp;</span> (0, 0, 255) |
+| 2   | building    | <span style="background-color:rgb(250, 170, 30)">&nbsp;&nbsp;&nbsp;</span> (250, 170, 30) |
+| 3   | tree        | <span style="background-color:rgb(107, 142, 35)">&nbsp;&nbsp;&nbsp;</span> (107, 142, 35) |
+| 4   | car         | <span style="background-color:rgb(255, 0, 0)">&nbsp;&nbsp;&nbsp;</span> (255, 0, 0) |
+| 5   | person      | <span style="background-color:rgb(245, 35, 232)">&nbsp;&nbsp;&nbsp;</span> (245, 35, 232) |
+| 6   | sky         | <span style="background-color:rgb(100, 60, 0)">&nbsp;&nbsp;&nbsp;</span> (100, 60, 0) |
+| 7   | pole        | <span style="background-color:rgb(190, 153, 153)">&nbsp;&nbsp;&nbsp;</span> (190, 153, 153) |
+| 8   | grass       | <span style="background-color:rgb(35, 142, 107)">&nbsp;&nbsp;&nbsp;</span> (35, 142, 107) |
+| 9   | fence       | <span style="background-color:rgb(70, 70, 70)">&nbsp;&nbsp;&nbsp;</span> (70, 70, 70) |
+| 10  | marking     | <span style="background-color:rgb(255, 255, 255)">&nbsp;&nbsp;&nbsp;</span> (255, 255, 255) |
+| 11  | window_hot  | <span style="background-color:rgb(150, 0, 128)">&nbsp;&nbsp;&nbsp;</span> (150, 0, 128) |
+| 12  | window_cold | <span style="background-color:rgb(224, 170, 224)">&nbsp;&nbsp;&nbsp;</span> (224, 170, 224) |
+| 13  | trunk       | <span style="background-color:rgb(139, 69, 19)">&nbsp;&nbsp;&nbsp;</span> (139, 69, 19) |
+| 14  | sign        | <span style="background-color:rgb(220, 220, 0)">&nbsp;&nbsp;&nbsp;</span> (220, 220, 0) |
+| 15  | roof        | <span style="background-color:rgb(255, 100, 0)">&nbsp;&nbsp;&nbsp;</span> (255, 100, 0) |
+
+* **Emplacement :** `models/finetuned_models/V2_day_and_night/epoch=46-val_mIOU=0.4421.ckpt`
   
