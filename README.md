@@ -359,7 +359,8 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 
 * **Emplacement :** models/soda/val_mIOU=0.6403.ckpt
 
-
+/
+/
 
 **Fine-tuning V1 Jour**
 
@@ -382,9 +383,8 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 | 11  | marking    | <span style="background-color:rgb(255, 255, 255)">&nbsp;&nbsp;&nbsp;</span> (255, 255, 255) |
 
 * **Emplacement :** models/finetuned_models/V1_day/1-epoch=37-val_mIOU=0.4305.ckpt
-
-
-
+/
+/
 **Fine-tuning V2 Jour et Nuit**
 
 * Modèle entraîné sur des données de jour et de nuit (juillet et août).
