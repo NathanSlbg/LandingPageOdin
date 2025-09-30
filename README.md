@@ -407,7 +407,7 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 
 * **Emplacement :** `models/finetuned_models/V2_day_and_night/epoch=46-val_mIOU=0.4421.ckpt`
 
-##Gestion des classes 
+## Gestion des classes 
 
 **Segmentation** --> ['fine_tuning']['model_classes']
 **Correction** --> ['correction']['coverage_thresholds'] et ['correction']['bgr_mapping']
