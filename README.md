@@ -61,6 +61,7 @@ python scripts/thermal_finalize.py
 
 # Étape 9 : Mettre à jour la table maître avec les statistiques de température finales
 python scripts/table.py --mode temperatures
+```
 
 ## Organisation des Données et Fichiers
 
