@@ -406,4 +406,14 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
 | 15  | roof        | <span style="background-color:rgb(255, 100, 0)">&nbsp;&nbsp;&nbsp;</span> (255, 100, 0) |
 
 * **Emplacement :** `models/finetuned_models/V2_day_and_night/epoch=46-val_mIOU=0.4421.ckpt`
+
+##Gestion des classes 
+
+**Segmentation** --> ['fine_tuning']['model_classes']
+**Correction** --> ['correction']['coverage_thresholds'] et ['correction']['bgr_mapping']
+**Thermal Calculate** --> ['thermal_calculation']['bgr_mapping'] et ['thermal_calculation']['emissivity_mapping']
+**Table** --> ['master-table']['bgr_mapping']
+**Annotation** --> ['annotation']['output_bgr_colors']
+**Fine Tuning** --> ['fine_tuning']['model_classes'] et ['fine_tuning']['class_weights']
+
   
