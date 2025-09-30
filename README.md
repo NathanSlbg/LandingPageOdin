@@ -183,8 +183,13 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
         route: 0.7
         building: 0.6
         ...
-      generator_params:
-        points_per_side: 32
+       generator_params:
+       points_per_side: 32 #Densité de grille de points pour chercher des objets
+       pred_iou_thresh: 0.8 #Premier filtre de qualité des masques
+       stability_score_thresh: 0.9 #Deuxième filtre de qualité des masques pour robustesse et fiabilité
+       crop_n_layers: 0
+       crop_n_points_downscale_factor: 1
+       min_mask_region_area: 30 #Filtre de taille
         
     ```
 * **Résultats :** Le script génère quatre sorties principales : les masques corrigés (`final_corrected`), les visualisations SAM (`sam`), et les cartes d'IDs et aperçus pour l'annotation (`annotation_data`).
@@ -198,7 +203,6 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
-    session_id: "session_570"
     thermal_calculation:
       segmentation_mask_source_dir: "data/segmentation_results/final_corrected"
       master_table_path: "results/master_table.csv"
@@ -219,9 +223,8 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
     ```bash
     python scripts/road_shadow.py
     ```
-* **Configuration (`config.yaml`) :**
+* **Configuration (`config.yaml`) :** Il faut changer les températures ombre et soleil (hot et cold) pour que ça corresponde à la session traitée.
     ```yaml
-    session_id: "session_570"
     shadow_segmentation:
       min_std_dev_for_otsu: 3.0
       otsu_min_group_percentage: 0.05
@@ -252,9 +255,8 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
         ```bash
         python scripts/table.py --mode temperatures
         ```
-* **Configuration (`config.yaml`) :**
+* **Configuration (`config.yaml`) :** 
     ```yaml
-    session_id: "session_570"
     master_table:
       output_path: "results/master_table.csv"
       bgr_mapping:
@@ -275,7 +277,6 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
-    session_id: "session_570"
     annotation:
       pre_annotated_dir: "final_corrected"
       output_bgr_colors:
@@ -292,7 +293,6 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
     ```
 * **Configuration (`config.yaml`) :**
     ```yaml
-    session_id: "session_570"
     fine_tuning:
       dest_dataset_name: "data/annotated_dataset"
       train_split_ratio: 0.8
