@@ -13,14 +13,17 @@ Ce projet a pour objectif de mettre en place une chaîne de traitement complète
     ```
 
 2.  **Installer les dépendances Python :**
-    Il est recommandé d'utiliser un environnement virtuel avec Python 3.10.
+    Il est recommandé d'utiliser un environnement virtuel avec Python 3.10. PyTorch doit être installé séparément pour correspondre à la configuration matérielle (GPU avec CUDA ou CPU). La commande ci-dessous est pour une installation avec CUDA 12.1.
+    
     ```bash
     python -m venv venv
     source venv/bin/activate
-    pip install -r requirements.txt
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+    
+    pip install -r config/requirements.txt
     ```
 
-3.  **Configuration :**
+4.  **Configuration :**
     Le fichier principal de configuration est `config/config.yaml`. Avant de lancer les scripts, il faut renseigner les chemins et les paramètres, notamment le `session_id` à traiter.
 
 ---
