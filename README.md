@@ -325,3 +325,35 @@ Chaque script est conçu pour être lancé depuis la racine du projet. La config
         lr: 0.001
     ```
 * **Résultats :** Un nouveau modèle entraîné est sauvegardé dans le dossier spécifié par `output_model_dir`. Ce dossier contient les logs d'entraînement et, surtout, le sous-dossier `ckpt/` avec les poids du modèle (`.ckpt`). Le chemin vers le meilleur checkpoint peut ensuite être utilisé dans la section `segmentation` pour faire des inférences avec ce nouveau modèle amélioré.
+  
+## Modèles
+
+**SODA**
+
+* Modèle entrainé sur les images du jeu de données SODA.
+* **Classes :**
+
+| ID  | Classe        | Couleur (RVB)                                                |
+| :-- | :------------ | :----------------------------------------------------------- |
+| 0   | background    | <span style="background-color:rgb(0, 0, 0)">&nbsp;&nbsp;&nbsp;</span> (0, 0, 0) |
+| 1   | person        | <span style="background-color:rgb(244, 35, 232)">&nbsp;&nbsp;&nbsp;</span> (244, 35, 232) |
+| 2   | building      | <span style="background-color:rgb(250, 170, 30)">&nbsp;&nbsp;&nbsp;</span> (250, 170, 30) |
+| 3   | tree          | <span style="background-color:rgb(107, 142, 35)">&nbsp;&nbsp;&nbsp;</span> (107, 142, 35) |
+| 4   | road          | <span style="background-color:rgb(0, 0, 255)">&nbsp;&nbsp;&nbsp;</span> (0, 0, 255) |
+| 5   | pole          | <span style="background-color:rgb(190, 153, 153)">&nbsp;&nbsp;&nbsp;</span> (190, 153, 153) |
+| 6   | grass         | <span style="background-color:rgb(35, 142, 107)">&nbsp;&nbsp;&nbsp;</span> (35, 142, 107) |
+| 7   | door          | <span style="background-color:rgb(142, 0, 0)">&nbsp;&nbsp;&nbsp;</span> (142, 0, 0) |
+| 8   | table         | <span style="background-color:rgb(153, 153, 153)">&nbsp;&nbsp;&nbsp;</span> (153, 153, 153) |
+| 9   | chair         | <span style="background-color:rgb(220, 220, 0)">&nbsp;&nbsp;&nbsp;</span> (220, 220, 0) |
+| 10  | car           | <span style="background-color:rgb(255, 0, 0)">&nbsp;&nbsp;&nbsp;</span> (255, 0, 0) |
+| 11  | bicycle       | <span style="background-color:rgb(220, 20, 60)">&nbsp;&nbsp;&nbsp;</span> (220, 20, 60) |
+| 12  | lamp          | <span style="background-color:rgb(60, 20, 220)">&nbsp;&nbsp;&nbsp;</span> (60, 20, 220) |
+| 13  | monitor       | <span style="background-color:rgb(102, 102, 156)">&nbsp;&nbsp;&nbsp;</span> (102, 102, 156) |
+| 14  | trafficCone   | <span style="background-color:rgb(128, 64, 128)">&nbsp;&nbsp;&nbsp;</span> (128, 64, 128) |
+| 15  | trash can     | <span style="background-color:rgb(70, 0, 0)">&nbsp;&nbsp;&nbsp;</span> (70, 0, 0) |
+| 16  | animal        | <span style="background-color:rgb(153, 153, 190)">&nbsp;&nbsp;&nbsp;</span> (153, 153, 190) |
+| 17  | fence         | <span style="background-color:rgb(70, 70, 70)">&nbsp;&nbsp;&nbsp;</span> (70, 70, 70) |
+| 18  | sky           | <span style="background-color:rgb(100, 60, 0)">&nbsp;&nbsp;&nbsp;</span> (100, 60, 0) |
+| 19  | river         | <span style="background-color:rgb(0, 64, 128)">&nbsp;&nbsp;&nbsp;</span> (0, 64, 128) |
+| 20  | sidewalk      | <span style="background-color:rgb(0, 130, 180)">&nbsp;&nbsp;&nbsp;</span> (0, 130, 180) |
+  
